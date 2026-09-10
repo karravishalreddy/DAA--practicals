@@ -1,0 +1,82 @@
+#include <iostream>
+#include <vector>
+#include <chrono>
+
+using namespace std;
+using namespace std::chrono;
+
+// Linear Search
+int linearSearch(vector<int> &arr, int key)
+{
+    for (int i = 0; i < arr.size(); i++)
+    {
+        if (arr[i] == key)
+            return i;
+    }
+    return -1;
+}
+
+// Binary Search
+int binarySearch(vector<int> &arr, int key)
+{
+    int low = 0, high = arr.size() - 1;
+
+    while (low <= high)
+    {
+        int mid = low + (high - low) / 2;
+
+        if (arr[mid] == key)
+            return mid;
+        else if (arr[mid] < key)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+
+    return -1;
+}
+
+int main()
+{
+    vector<int> arr;
+
+    // Create a sorted array from 1 to 100
+    for (int i = 1; i <= 100; i++)
+    {
+        arr.push_back(i);
+    }
+
+    int key = 100;
+
+    // Linear Search Timing
+    auto start1 = high_resolution_clock::now();
+    int index1 = linearSearch(arr, key);
+    auto stop1 = high_resolution_clock::now();
+
+    auto duration1 = duration_cast<microseconds>(stop1 - start1);
+
+    cout << "Linear Search\n";
+    if (index1 != -1)
+        cout << "Element found at index " << index1 << endl;
+    else
+        cout << "Element not found\n";
+
+    cout << "Time Taken : " << duration1.count() << " microseconds\n\n";
+
+    // Binary Search Timing
+    auto start2 = high_resolution_clock::now();
+    int index2 = binarySearch(arr, key);
+    auto stop2 = high_resolution_clock::now();
+
+    auto duration2 = duration_cast<microseconds>(stop2 - start2);
+
+    cout << "Binary Search\n";
+    if (index2 != -1)
+        cout << "Element found at index " << index2 << endl;
+    else
+        cout << "Element not found\n";
+
+    cout << "Time Taken : " << duration2.count() << " microseconds\n";
+
+    return 0;
+}
