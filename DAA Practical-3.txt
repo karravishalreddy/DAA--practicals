@@ -1,0 +1,118 @@
+#include <iostream>
+#include <vector>
+#include <chrono>
+
+using namespace std;
+using namespace std::chrono;
+
+// Function to heapify for Max Heap
+void maxHeapify(vector<int>& arr, int n, int i)
+{
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
+
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+
+    if (largest != i)
+    {
+        swap(arr[i], arr[largest]);
+        maxHeapify(arr, n, largest);
+    }
+}
+
+// Max Heap Sort
+void maxHeapSort(vector<int>& arr)
+{
+    int n = arr.size();
+
+    for (int i = n / 2 - 1; i >= 0; i--)
+        maxHeapify(arr, n, i);
+
+    for (int i = n - 1; i > 0; i--)
+    {
+        swap(arr[0], arr[i]);
+        maxHeapify(arr, i, 0);
+    }
+}
+
+// Function to heapify for Min Heap
+void minHeapify(vector<int>& arr, int n, int i)
+{
+    int smallest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && arr[left] < arr[smallest])
+        smallest = left;
+
+    if (right < n && arr[right] < arr[smallest])
+        smallest = right;
+
+    if (smallest != i)
+    {
+        swap(arr[i], arr[smallest]);
+        minHeapify(arr, n, smallest);
+    }
+}
+
+// Min Heap Sort
+void minHeapSort(vector<int>& arr)
+{
+    int n = arr.size();
+
+    for (int i = n / 2 - 1; i >= 0; i--)
+        minHeapify(arr, n, i);
+
+    for (int i = n - 1; i > 0; i--)
+    {
+        swap(arr[0], arr[i]);
+        minHeapify(arr, i, 0);
+    }
+}
+
+int main()
+{
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    vector<int> arr(n);
+
+    cout << "Enter elements:\n";
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
+
+    vector<int> maxArr = arr;
+    vector<int> minArr = arr;
+
+    // MAX HEAP SORT
+    auto start = high_resolution_clock::now();
+    maxHeapSort(maxArr);
+    auto stop = high_resolution_clock::now();
+
+    auto nano = duration_cast<nanoseconds>(stop - start);
+    auto micro = duration_cast<microseconds>(stop - start);
+
+    cout << "\n========== MAX HEAP SORT ==========\n";
+    cout << "Nanoseconds : " << nano.count() << " ns\n";
+    cout << "Microseconds : " << micro.count() << " us\n";
+
+    // MIN HEAP SORT
+    start = high_resolution_clock::now();
+    minHeapSort(minArr);
+    stop = high_resolution_clock::now();
+
+    nano = duration_cast<nanoseconds>(stop - start);
+    micro = duration_cast<microseconds>(stop - start);
+
+    cout << "\n========== MIN HEAP SORT ==========\n";
+    cout << "Nanoseconds : " << nano.count() << " ns\n";
+    cout << "Microseconds : " << micro.count() << " us\n";
+
+    return 0;
+}
